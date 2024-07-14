@@ -1,0 +1,62 @@
+{
+  "name": "ystyle",
+  "version": "1.0.0",
+  "description": "textile-application-manager",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron": "electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
+  },
+  "author": "Nikita Lysiuk",
+  "license": "MIT",
+  "build": {
+    "appId": "com.vladickGey.ystyle",
+    "productName": "YStyle",
+    "icon": "assets/logo.ico",
+    "directories": {
+      "output": "out"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "style.css",
+      "node_modules/**/*",
+      "package.json",
+      "renderer/**/*",
+      "assets/**/*",
+      "database/**/*",
+      "pages/**/*",
+      "styles/**/*"
+    ],
+    "extraResources": [
+      "./database.db"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YStyle",
+      "license": "LICENSE.txt"
+    }
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^31.1.0",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.1.2"
+  }
+}

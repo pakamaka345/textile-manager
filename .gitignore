@@ -1,0 +1,51 @@
+ Залежності
+/node_modules
+
+# Логи
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Директорії рантайму
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Директорії збірки
+/build
+/dist
+/tmp
+
+# Інструменти розробника
+/.vscode
+/.idea
+*.swp
+*.swo
+*.sublime-workspace
+
+# Файли операційної системи
+.DS_Store
+Thumbs.db
+
+# Файли сертифікатів
+*.pem
+
+# Файли конфігурації середовища
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Файли пакетів
+*.tgz
+/package-lock.json
+/yarn.lock
+
+# Файли, що генеруються під час виконання
+/electron-builder-out
+
+/out

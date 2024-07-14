@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Curtains</title>
+</head>
+<body class="bg-gray-800 text-white h-screen flex items-center justify-center">
+    <div class="relative w-3/4 bg-gray-700 p-5 rounded-lg">
+        <button class="absolute top-0 left-1 m-4 text-white text-2xl" id="back-btn">
+            <i class="fa-solid fa-backward"></i>
+        </button>
+        <div class="absolute top-5 right-5 m-4" id="icon-ctr">
+            <button class="text-white text-2xl" id="toggle-btn">
+                <i id="toggle-icon" class="fa-solid fa-arrow-left"></i>
+            </button>
+        </div>
+        <h1 class="text-4xl mb-4 text-center">Тюль на складі</h1>
+        <form id="tulles-form" class="grid grid-cols-2 gap-4">
+            <div class="space-y-4">
+                <div>
+                    <label for="code" class="block text-sm font-medium">Код</label>
+                    <input type="text" id="code" name="code" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+                <div>
+                    <label for="name" class="block text-sm font-medium">Назва</label>
+                    <input type="text" id="name" name="name" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+                <div>
+                    <label for="purchaseprice" class="block text-sm font-medium">Ціна закупу ($)</label>
+                    <input type="number" step="0.01" id="purchaseprice" name="purchaseprice" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+                <div>
+                    <label for="sellingprice" class="block text-sm font-medium">Ціна продажу (₴)</label>
+                    <input type="number" step="0.01" id="sellingprice" name="sellingprice" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+                <div>
+                    <label for="length" class="block text-sm font-medium">Кількість</label>
+                    <input type="number" step="0.01" id="length" name="length" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+                <div>
+                    <label for="date" class="block text-sm font-medium">Дата</label>
+                    <input type="text" id="date" name="date" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="color_id" class="block text-sm font-medium">Колір</label>
+                    <select id="colors-id" name="color_id" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label for="fabrictype_id" class="block text-sm font-medium">Вид тканини</label>
+                    <select id="fabrictypes-id" name="fabrictype_id" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label for="tulletype_id" class="block text-sm font-medium">Тип тюлі</label>
+                    <select id="tulletypes-id" name="tulletype_id" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label for="supplier_id" class="block text-sm font-medium">Постачальник</label>
+                    <select id="suppliers-id" name="supplier_id" class="mt-1 p-2 block w-full bg-gray-800 rounded border border-gray-600">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div id="error" class="hidden absolute top-22 right-5 m-4">
+                    <i class="fa-solid fa-exclamation-circle mr-2"></i>
+                    <span id="error-text" class="text-2xl"></span>
+                </div>
+            </div>
+            <div class="col-span-2 flex justify-center">
+                <button type="submit" class="w-1/2 py-2 bg-blue-500 hover:bg-blue-700 rounded">Додати</button>
+            </div>
+        </form>
+    </div>
+    <div id="tulles-table" class="absolute top-0 right-0 h-full w-full bg-gray-700 p-5 rounded-lg hidden">
+        <h2 class="text-3xl mb-4">Таблиця тюль</h2>
+        <div class="absolute top-5 right-5 m-4" id="icon-ctr">
+            <button class="text-white text-2xl" id="toggle-btn-table">
+                <i id="toggle-icon" class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        <table class="w-full text-left bg-gray-800 rounded-lg border border-gray-600">
+            <thead>
+                <tr class="bg-gray-900">
+                    <th class="py-2 px-4"></th> <!-- Edit and Delete buttons go here -->
+                    <th class="py-2 px-4 border">ID</th>
+                    <th class="py-2 px-4 border">Код</th>
+                    <th class="py-2 px-4 border">Ім'я</th>
+                    <th class="py-2 px-4 border">Колір </th>
+                    <th class="py-2 px-4 border">Вид тканини</th>
+                    <th class="py-2 px-4 border">Тип тюлі</th>
+                    <th class="py-2 px-4 border">Ціна закупу</th>
+                    <th class="py-2 px-4 border">Ціна продажу</th>
+                    <th class="py-2 px-4 border">Кількість</th>
+                    <th class="py-2 px-4 border">Постачальник</th>
+                    <th class="py-2 px-4 border">Дата</th>
+                </tr>
+            </thead>
+            <tbody id="table-body" class="border border-gray-600">
+                <!-- Data rows go here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="../../renderer/tullesRenderer.js"></script>
+    <script src="https://kit.fontawesome.com/08de6add7e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#date", {
+            enableTime: true,
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+    </script>
+</body>
+</html>

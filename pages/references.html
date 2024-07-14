@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Довідник</title>
+</head>
+<body class="bg-gray-800 text-white">
+    <div class="flex justify-center">
+        <div class="relative bg-gray-700 w-11/12 mt-5 mb-2 p-5 rounded-lg">
+            <button class="absolute top-0 left-5 m-4 text-white text-2xl" id="back-btn">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+            <div id="error" class="hidden absolute top-22 right-5 m-4">
+                <i class="fa-solid fa-exclamation-circle mr-2"></i>
+                <span id="error-text" class="text-2xl"></span>
+            </div>
+            <div class="flex justify-center">
+                <h1 id="title" class="text-4xl">Title</h1>
+            </div>
+            <div class="bg-gray-600 rounded-lg p-5 mt-5">
+                <div class="flex justify-center">
+                    <form id="add-form" class="flex ">
+                        <input type="text" id="name" placeholder="Введіть назву" required class="w-full h-12 rounded-lg border-none bg-gray-800 text-white mx-2 px-3">
+                        <button type="submit" class="w-36 h-12 rounded-lg bg-gray-800 hover:bg-gray-900 mx-2 text-xl">Додати</button>
+                    </form>
+                </div>
+                <div class="flex justify-center mt-5">
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr class="bg-gray-800 text-lg rounded-lg">
+                                <th class="w-1/6 px-4 py-2"></th>
+                                <th class="w-5/6 px-4 py-2 text-left">Назва</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../renderer/referencesRenderer.js"></script>
+    <script src="https://kit.fontawesome.com/08de6add7e.js" crossorigin="anonymous"></script>
+</body>
+</html>
