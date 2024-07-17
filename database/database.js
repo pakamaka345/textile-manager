@@ -19,7 +19,7 @@ function createCurtainsTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS curtains (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code VARCHAR(25) NOT NULL,
+            code VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
             color_id INTEGER,
             fabrictype_id INTEGER,
@@ -46,12 +46,12 @@ function createFittingsTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS fittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code VARCHAR(25) NOT NULL,
+            code VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
             color_id INTEGER,
             purchaseprice REAL NOT NULL,
             sellingprice REAL NOT NULL,
-            count REAL NOT NULL,
+            length REAL NOT NULL,
             supplier_id INTEGER,
             date DATE NOT NULL,
             FOREIGN KEY (color_id) REFERENCES colors(id),
@@ -69,7 +69,7 @@ function createLacesTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS laces (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code VARCHAR(25) NOT NULL,
+            code VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
             color_id INTEGER,
             purchaseprice REAL NOT NULL,
@@ -92,7 +92,7 @@ function createTullesTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS tulles (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code VARCHAR(25) NOT NULL,
+            code VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
             color_id INTEGER,
             fabrictype_id INTEGER,
@@ -118,12 +118,12 @@ function createTullesTable() {
 function createOrdersTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             date DATE NOT NULL,
             work_price REAL,
             discount REAL,
             prepayment REAL,
-            phone_number VARCHAR(15)
+            phone_number VARCHAR(30)
         )`;
     try {
         db.prepare(query).run();
@@ -165,7 +165,7 @@ function createCurtainTypesTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS curtaintypes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(50) NOT NULL
+            name VARCHAR(100) NOT NULL
         )`;
     try {
         db.prepare(query).run();
@@ -179,7 +179,7 @@ function createTulleTypesTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS tulletypes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(50) NOT NULL
+            name VARCHAR(100) NOT NULL
         )`;
     try {
         db.prepare(query).run();
@@ -193,7 +193,7 @@ function createFabricTypesTable() {
     const query = `
         CREATE TABLE IF NOT EXISTS fabrictypes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(50) NOT NULL
+            name VARCHAR(100) NOT NULL
         )`;
     try {
         db.prepare(query).run();
@@ -208,7 +208,8 @@ function createOrderCurtainsTable() {
         CREATE TABLE IF NOT EXISTS order_curtains (
             order_id INTEGER,
             curtain_id INTEGER,
-            quantity INTEGER NOT NULL,
+            length REAL NOT NULL,
+            sellingprice REAL NOT NULL,
             PRIMARY KEY (order_id, curtain_id),
             FOREIGN KEY (order_id) REFERENCES orders(id),
             FOREIGN KEY (curtain_id) REFERENCES curtains(id)
@@ -226,7 +227,8 @@ function createOrderTullesTable() {
         CREATE TABLE IF NOT EXISTS order_tulles (
             order_id INTEGER,
             tulle_id INTEGER,
-            quantity INTEGER NOT NULL,
+            length REAL NOT NULL,
+            sellingprice REAL NOT NULL,
             PRIMARY KEY (order_id, tulle_id),
             FOREIGN KEY (order_id) REFERENCES orders(id),
             FOREIGN KEY (tulle_id) REFERENCES tulles(id)
@@ -244,7 +246,8 @@ function createOrderLacesTable() {
         CREATE TABLE IF NOT EXISTS order_laces (
             order_id INTEGER,
             lace_id INTEGER,
-            quantity INTEGER NOT NULL,
+            length REAL NOT NULL,
+            sellingprice REAL NOT NULL,
             PRIMARY KEY (order_id, lace_id),
             FOREIGN KEY (order_id) REFERENCES orders(id),
             FOREIGN KEY (lace_id) REFERENCES laces(id)
@@ -262,7 +265,8 @@ function createOrderFittingsTable() {
         CREATE TABLE IF NOT EXISTS order_fittings (
             order_id INTEGER,
             fitting_id INTEGER,
-            quantity INTEGER NOT NULL,
+            length REAL NOT NULL,
+            sellingprice REAL NOT NULL,
             PRIMARY KEY (order_id, fitting_id),
             FOREIGN KEY (order_id) REFERENCES orders(id),
             FOREIGN KEY (fitting_id) REFERENCES fittings(id)

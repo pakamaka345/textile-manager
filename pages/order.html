@@ -1,12 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Замовлення</title>
+    <title>Форма замовлення</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .checkbox-large {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    </style>
 </head>
-<body>
-    <h1>Замовлення</h1>
+<body class="bg-gray-800 text-white p-6">
+    <div class="container mx-auto">
+        <button class="absolute top-0 left-2 m-4 text-white text-2xl" id="back-btn">
+            <i class="fa-solid fa-backward"></i>
+        </button>
+        <h1 class="text-2xl mb-4">Форма замовлення</h1>
+        
+        <form id="order-form" class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="number">Номер замовлення</label>
+                <input type="text" id="number" name="number" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label for="date">Дата замовлення</label>
+                <input type="text" id="date" name="date" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label for="work_price">Робота, грн</label>
+                <input type="number" id="work_price" name="work_price" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label for="discount">Знижка</label>
+                <input type="number" id="discount" name="discount" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label for="prepayment">Завдаток</label>
+                <input type="number" id="prepayment" name="prepayment" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <label for="phone_number">№ телефону</label>
+                <input type="text" id="phone_number" name="phone_number" class="w-full bg-gray-700 p-2 rounded">
+            </div>
+            <div>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" id="order-submit">Зберегти</button>
+            </div>
+        </form>
+
+        <div class="grid grid-cols-2 gap-4 mt-2">
+            <form id="curtains-order-form" class="bg-gray-500 p-4 rounded">
+                <div>
+                    <label for="curtains-code">Код</label>
+                    <input type="text" id="curtains-code" name="curtains-code" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="curtains-name">Назва</label>
+                    <input type="text" id="curtains-name" name="curtains-name" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="curtains">Виберіть штору</label>
+                    <select id="curtains" name="curtains" class="w-full bg-gray-700 p-2 rounded">
+
+                    </select>
+                </div>
+                <div>
+                    <label for="curtains-length">Кількість</label>
+                    <input type="number" id="curtains-length" name="curtains-length" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="curtains-sellingprice">Ціна продажу</label>
+                    <input type="number" id="curtains-sellingprice" name="curtains-sellingprice" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="curtains-toggle" class="text-gray-300 text-xl">
+                        Натисніть якщо на складі більше немає цієї штори
+                    </label>
+                    <input type="checkbox" id="curtains-toggle" name="curtains-toggle" class="bg-gray-700 p-2 rounded checkbox-large">
+                </div>
+                <div >
+                    <button class="bg-gray-700 hover:bg-gray-800 text-white font-bold mt-2 py-2 px-4 rounded" type="submit" id="curtains-submit">Додати штору до замовлення</button>
+                </div>
+            </form>
+
+            <form id="tulles-order-form" class="bg-gray-500 p-4 rounded">
+                <div>
+                    <label for="tulles-code">Код</label>
+                    <input type="text" id="tulles-code" name="tulles-code" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="tulles-name">Назва</label>
+                    <input type="text" id="tulles-name" name="tulles-name" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="tulles">Виберіть тюль</label>
+                    <select id="tulles" name="tulles" class="w-full bg-gray-700 p-2 rounded">
+
+                    </select>
+                </div>
+                <div>
+                    <label for="tulles-length">Кількість</label>
+                    <input type="number" id="tulles-length" name="tulles-length" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="tulles-sellingprice">Ціна продажу</label>
+                    <input type="number" id="tulles-sellingprice" name="tulles-sellingprice" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="tulles-toggle" class="text-gray-300 text-xl">
+                        Натисніть якщо на складі більше немає цієї тюлі
+                    </label>
+                    <input type="checkbox" id="tulles-toggle" name="tulles-toggle" class="bg-gray-700 p-2 rounded checkbox-large">
+                </div>
+                <div >
+                    <button class="bg-gray-700 hover:bg-gray-800 text-white font-bold mt-2 py-2 px-4 rounded" type="submit" id="tulles-submit">Додати тюль до замовлення</button>
+                </div>
+            </form>
+
+            <form id="laces-order-form" class="bg-gray-500 p-4 rounded">
+                <div>
+                    <label for="laces-code">Код</label>
+                    <input type="text" id="laces-code" name="laces-code" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="laces-name">Назва</label>
+                    <input type="text" id="laces-name" name="laces-name" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="laces">Виберіть мереживо</label>
+                    <select id="laces" name="laces" class="w-full bg-gray-700 p-2 rounded">
+
+                    </select>
+                </div>
+                <div>
+                    <label for="laces-length">Кількість</label>
+                    <input type="number" id="laces-length" name="laces-length" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="laces-sellingprice">Ціна продажу</label>
+                    <input type="number" id="laces-sellingprice" name="laces-sellingprice" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="laces-toggle" class="text-gray-300 text-xl">
+                        Натисніть якщо на складі більше немає цього мережива
+                    </label>
+                    <input type="checkbox" id="laces-toggle" name="laces-toggle" class="bg-gray-700 p-2 rounded checkbox-large">
+                </div>
+                <div >
+                    <button class="bg-gray-700 hover:bg-gray-800 text-white font-bold mt-2 py-2 px-4 rounded" type="submit" id="laces-submit">Додати мереживо до замовлення</button>
+                </div>
+            </form>
+
+            <form id="fittings-order-form" class="bg-gray-500 p-4 rounded">
+                <div>
+                    <label for="fittings-code">Код</label>
+                    <input type="text" id="fittings-code" name="fittings-code" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="fittings-name">Назва</label>
+                    <input type="text" id="fittings-name" name="fittings-name" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="fittings">Виберіть фурнітуру</label>
+                    <select id="fittings" name="fittings" class="w-full bg-gray-700 p-2 rounded">
+
+                    </select>
+                </div>
+                <div>
+                    <label for="fittings-length">Кількість</label>
+                    <input type="number" id="fittings-length" name="fittings-length" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div>
+                    <label for="fittings-sellingprice">Ціна продажу</label>
+                    <input type="number" id="fittings-sellingprice" name="fittings-sellingprice" class="w-full bg-gray-700 p-2 rounded">
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="fittings-toggle" class="text-gray-300 text-xl">
+                        Натисніть якщо на складі більше немає цієї фурнітури
+                    </label>
+                    <input type="checkbox" id="fittings-toggle" name="fittings-toggle" class="bg-gray-700 p-2 rounded checkbox-large">
+                </div>
+                <div >
+                    <button class="bg-gray-700 hover:bg-gray-800 text-white font-bold mt-2 py-2 px-4 rounded" type="submit" id="fittings-submit">Додати фурнітуру до замовлення</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="list-of-textiles" class="grid grid-cols-2 gap-4">
+            <div>
+                <h2 class="text-2xl">Штори</h2>
+                <ul id="curtains-list" class="list-disc pl-4">
+                    
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl">Тюлі</h2>
+                <ul id="tulles-list" class="list-disc pl-4">
+                    
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl">Мереживо</h2>
+                <ul id="laces-list" class="list-disc pl-4">
+                    
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl">Фурнітура</h2>
+                <ul id="fittings-list" class="list-disc pl-4">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="realLengthModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style="display:none;">
+        <div class="bg-white p-6 rounded-lg relative">
+            <span class="close-button absolute top-2 right-2 text-black text-2xl cursor-pointer">&times;</span>
+            <h2 class="text-2xl mb-4">Введіть реальну довжину</h2>
+            <input type="number" id="realLengthInput" placeholder="Вкажіть залишок на складі" class="w-full bg-gray-200 p-2 rounded mb-4">
+            <button id="confirmRealLengthBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Підтвердити</button>
+        </div>
+    </div>
+
     <script src="../renderer/orderRenderer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#date", {
+            enableTime: true,
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+    </script>
 </body>
 </html>

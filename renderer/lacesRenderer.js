@@ -1,17 +1,17 @@
 const { ipcRenderer } = require('electron');
 
 document.getElementById('toggle-btn').addEventListener('click', function() {
-    const curtainTable = document.getElementById('curtains-table');
+    const laceTable = document.getElementById('laces-table');
     const toggleBtn = document.getElementById('toggle-btn');
     const tableBtn = document.getElementById('toggle-btn-table');
 
     toggleBtn.addEventListener('click', () => {
-        curtainTable.classList.remove('hidden');
-        getCurtains();
+        laceTable.classList.remove('hidden');
+        getLaces();
     });
 
     tableBtn.addEventListener('click', () => {
-        curtainTable.classList.add('hidden');
+        laceTable.classList.add('hidden');
     });
 });
 
@@ -21,37 +21,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     getDataReferences('colors');
-    getDataReferences('fabrictypes');
-    getDataReferences('curtaintypes');
     getDataReferences('suppliers');
 
-    addCurtain();
+    addLace();
 });
 
-function addCurtain() {
+function addLace() {
     const btn = document.querySelector('button[type="submit"]');
     btn.addEventListener('click', (event) => {
         event.preventDefault();
         const code = document.getElementById('code').value;
         const name = document.getElementById('name').value;
         const colorId = document.getElementById('colors-id').value;
-        const fabricTypeId = document.getElementById('fabrictypes-id').value;
-        const curtainTypeId = document.getElementById('curtaintypes-id').value;
         const purchasePrice = document.getElementById('purchaseprice').value;
         const sellingPrice = document.getElementById('sellingprice').value;
         const length = document.getElementById('length').value;
         const supplierId = document.getElementById('suppliers-id').value;
         const date = document.getElementById('date').value;
     
-        ipcRenderer.send('add-curtain', {
-            code, name, colorId, fabricTypeId, curtainTypeId, purchasePrice, sellingPrice, length, supplierId, date
+        ipcRenderer.send('add-lace', {
+            code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date
         });
 
         document.getElementById('code').value = '';
         document.getElementById('name').value = '';
         document.getElementById('colors-id').value = '';
-        document.getElementById('fabrictypes-id').value = '';
-        document.getElementById('curtaintypes-id').value = '';
         document.getElementById('purchaseprice').value = '';
         document.getElementById('sellingprice').value = '';
         document.getElementById('length').value = '';
@@ -60,8 +54,8 @@ function addCurtain() {
     });
 }
 
-function getCurtains() {
-    ipcRenderer.send('get-curtains', null);
+function getLaces() {
+    ipcRenderer.send('get-laces', null);
 }
 
 function getDataReferences(type) {
@@ -85,31 +79,29 @@ ipcRenderer.on('references', (event, arg) => {
     });
 });
 
-ipcRenderer.on('curtains', (event, curtains) => {
+ipcRenderer.on('laces', (event, laces) => {
     const table = document.getElementById('table-body');
     table.innerHTML = ''; 
 
-    curtains.forEach(curtain => {
+    laces.forEach(lace => {
         const tr = document.createElement('tr');
         tr.classList.add('hover:bg-gray-600'); // Add hover effect
 
         tr.innerHTML = `
             <td class="py-2 px-4">
-                <button class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-id="${curtain.id}">
+                <button class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-id="${lace.id}">
                     Видалити
                 </button>
             </td>
-            <td class="py-2 px-4 border">${curtain.id}</td>
-            <td class="py-2 px-4 border">${curtain.code}</td>
-            <td class="py-2 px-4 border">${curtain.name}</td>
-            <td class="py-2 px-4 border">${curtain.color}</td>
-            <td class="py-2 px-4 border">${curtain.fabric}</td>
-            <td class="py-2 px-4 border">${curtain.curtain}</td>
-            <td class="py-2 px-4 border ($)">${curtain.purchaseprice}</td>
-            <td class="py-2 px-4 border (₴)">${curtain.sellingprice}</td>
-            <td class="py-2 px-4 border">${curtain.length}</td>
-            <td class="py-2 px-4 border">${curtain.supplier}</td>
-            <td class="py-2 px-4 border">${curtain.date}</td>
+            <td class="py-2 px-4 border">${lace.id}</td>
+            <td class="py-2 px-4 border">${lace.code}</td>
+            <td class="py-2 px-4 border">${lace.name}</td>
+            <td class="py-2 px-4 border">${lace.color}</td>
+            <td class="py-2 px-4 border ($)">${lace.purchaseprice}</td>
+            <td class="py-2 px-4 border (₴)">${lace.sellingprice}</td>
+            <td class="py-2 px-4 border">${lace.length}</td>
+            <td class="py-2 px-4 border">${lace.supplier}</td>
+            <td class="py-2 px-4 border">${lace.date}</td>
         `;
 
         table.appendChild(tr);
@@ -118,32 +110,32 @@ ipcRenderer.on('curtains', (event, curtains) => {
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', (event) => {
             const id = event.target.dataset.id;
-            ipcRenderer.send('delete-curtain', { id });
+            ipcRenderer.send('delete-lace', { id });
         });
     });
 });
 
 
-ipcRenderer.on('curtain-delete', (event, arg) => {
-    getCurtains(); 
-    console.log(`Видалено штору: ${arg.id}`);
+ipcRenderer.on('lace-delete', (event, arg) => {
+    getLaces(); 
+    console.log(`Видалено мереживо: ${arg.id}`);
 });
 
 ipcRenderer.on('reference-failed', (event, err) => {
     console.error(`Помилка з довідником: ${err}`);
 });
 
-ipcRenderer.on('curtain-added', (event, arg) => {
-    console.log(`Штора ${arg.name} успішно додана.`);
+ipcRenderer.on('lace-added', (event, arg) => {
+    console.log(`Мереживо ${arg.name} успішно додана.`);
     const errDiv = document.getElementById('error');
     errDiv.classList.add('hidden');
-    getCurtains();
+    getLaces();
 });
 
-ipcRenderer.on('curtain-failed', (event, err) => {
+ipcRenderer.on('lace-failed', (event, err) => {
     const error = document.getElementById('error-text');
     const errDiv = document.getElementById('error');
     errDiv.classList.remove('hidden');
     error.innerText = err;
-    console.error(`Помилка додавання штори: ${err}`);
+    console.error(`Помилка з таблицею мережива: ${err}`);
 });

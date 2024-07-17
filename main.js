@@ -7,8 +7,8 @@ let win;
 function createWindow() {
     win = new BrowserWindow({
         show: false,
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -246,3 +246,216 @@ ipcMain.on('delete-tulle', (event, arg) => {
         event.reply('tulle-failed', err.message);
     }
 });
+
+ipcMain.on('add-lace', (event, arg) => {
+    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
+
+    const query = `
+        INSERT INTO laces (code, name, color_id, purchaseprice, sellingprice, length, supplier_id, date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    try {
+        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date);
+        event.reply('lace-added', { name });
+    } catch (err) {
+        event.reply('lace-failed', err.message);
+    }
+});
+
+ipcMain.on('get-laces', (event) => {
+    const query = `
+        SELECT l.id, l.code, l.name, co.name as color, l.purchaseprice, l.sellingprice, l.length, s.name as supplier, l.date
+        FROM laces l
+        JOIN colors co ON l.color_id = co.id
+        JOIN suppliers s ON l.supplier_id = s.id`;
+
+    try {
+        const laces = db.prepare(query).all();
+        event.reply('laces', laces);
+    }
+    catch (err) {
+        event.reply('lace-failed', err.message);
+    }
+});
+
+ipcMain.on('delete-lace', (event, arg) => { 
+    const { id } = arg;
+    const query = `DELETE FROM laces WHERE id = ?`;
+
+    try {
+        db.prepare(query).run(id);
+        event.reply('lace-delete', { id });
+    } catch (err) {
+        event.reply('lace-failed', err.message);
+    }
+});
+
+ipcMain.on('add-fitting', (event, arg) => {
+    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
+
+    const query = `
+        INSERT INTO fittings (code, name, color_id, purchaseprice, sellingprice, count, supplier_id, date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    try {
+        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date);
+        event.reply('fitting-added', { name });
+    } catch (err) {
+        event.reply('fitting-failed', err.message);
+    }
+});
+
+ipcMain.on('get-fittings', (event) => {
+    const query = `
+        SELECT f.id, f.code, f.name, co.name as color, f.purchaseprice, f.sellingprice, f.count, s.name as supplier, f.date
+        FROM fittings f
+        JOIN colors co ON f.color_id = co.id
+        JOIN suppliers s ON f.supplier_id = s.id`;
+
+    try {
+        const fittings = db.prepare(query).all();
+        event.reply('fittings', fittings);
+    } catch (err) {
+        event.reply('fitting-failed', err.message);
+    }
+});
+
+ipcMain.on('delete-fitting', (event, arg) => {
+    const { id } = arg;
+    const query = `DELETE FROM fittings WHERE id = ?`;
+
+    try {
+        db.prepare(query).run(id);
+        event.reply('fitting-delete', { id });
+    } catch (err) {
+        event.reply('fitting-failed', err.message);
+    }
+});
+
+ipcMain.on('add-order', (event, arg) => {
+    const { id, date, work_price, discount, prepayment, phone_number } = arg;
+    const query = `INSERT INTO orders (id, date, work_price, discount, prepayment, phone_number)
+                   VALUES (?, ?, ?, ?, ?, ?)`;
+
+    try {
+        db.prepare(query).run(id, date, work_price, discount, prepayment, phone_number);
+        event.reply('order-added', { id });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+})
+
+ipcMain.on('get-ordersId', (event, arg) => {
+    const query = `SELECT id FROM orders ORDER BY id DESC LIMIT 1`;
+    let result;
+    try {
+        result = db.prepare(query).get();
+        if (result === undefined) {
+            result = { id: 0 };
+        }
+        event.reply('ordersId', result);
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.on('get-order-list', (event, arg) => {
+    const { table, id } = arg;
+    const textile = table.slice(0, -1);
+    const query = `SELECT o.order_id, o.${textile}_id as textile_id, o.length, o.sellingprice, t.code, t.name, c.name as color
+                    FROM order_${table} o, ${table} t, colors c
+                    WHERE o.order_id = ? AND
+                    o.${textile}_id = t.id AND
+                    t.color_id = c.id`;
+
+    try {
+        const result = db.prepare(query).all(id);
+        event.reply('order-list', { table, result });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.on('delete-order-textile', (event, arg) => {
+    const { table, order_id, textile_id, length } = arg;
+    const textile = table.slice(0, -1);
+    const selectLength = `SELECT length FROM ${table} WHERE id = ?`;
+    const updateLength = `UPDATE ${table} SET length = ? WHERE id = ?`;
+    const deleteOrder = `DELETE FROM order_${table} WHERE order_id = ? AND ${textile}_id = ?`;
+
+    try {
+        const currentLength = db.prepare(selectLength).get(textile_id).length;
+        db.prepare(updateLength).run(currentLength + length, textile_id);
+        db.prepare(deleteOrder).run(order_id, textile_id);
+        event.reply('order-textile-deleted', { table, order_id, textile_id });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.on('get-textile', (event, arg) => {
+    const table = arg.textile;
+    const query = `SELECT t.id, t.code, t.name, c.name as color, t.length, t.sellingprice 
+                    FROM ${table} t, colors c 
+                    WHERE t.color_id = c.id AND
+                    t.length > 0`;
+
+    try {
+        const result = db.prepare(query).all();
+        event.reply('textile', { table, result });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.handle('get-textileasync', async (event, arg) => {
+    const { table, id } = arg;
+    const query = `SELECT length FROM ${table} WHERE id = ?`;
+
+    try {
+        const result = db.prepare(query).get(id);
+        return result.length;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});
+
+ipcMain.handle('check-orderId', async (event, arg) => {
+    const { order_id } = arg;
+    const query = `SELECT id FROM orders WHERE id = ?`;
+
+    try {
+        const result = db.prepare(query).get(order_id);
+        return result !== undefined;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+});
+
+ipcMain.on('update-length', (event, arg) => {
+    const { table, id, length } = arg;
+    const query = `UPDATE ${table} SET length = ? WHERE id = ?`;
+
+    try {
+        db.prepare(query).run(length, id);
+        event.reply('length-updated', { id, length });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.on('add-order-textile', (event, arg) => {
+    const { table, order_id, textile_id, length, sellingprice } = arg;
+    const textile = table.slice(0, -1);
+    const query = `INSERT INTO order_${table} (order_id, ${textile}_id, length, sellingprice)
+            VALUES (?, ?, ?, ?)`;
+
+    try {
+        db.prepare(query).run(order_id, textile_id, length, sellingprice);
+        event.reply('order-textile-added', { table, order_id, textile_id });
+    } catch (err) {
+        event.reply('orders-failed', err.message);
+    }
+});
+
+
