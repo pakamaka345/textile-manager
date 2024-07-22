@@ -16,7 +16,7 @@
 </head>
 <body class="bg-gray-800 text-white p-6">
     <div class="container mx-auto">
-        <button class="absolute top-0 left-2 m-4 text-white text-2xl" id="back-btn">
+        <button class="absolute top-0 left-2 m-4 text-white text-2xl hover:text-gray-400" id="back-btn">
             <i class="fa-solid fa-backward"></i>
         </button>
         <h1 class="text-2xl mb-4">Форма замовлення</h1>
@@ -229,7 +229,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         flatpickr("#date", {
-            enableTime: true,
+            enableTime: false,
             dateFormat: "d-m-Y",
             allowInput: true
         });

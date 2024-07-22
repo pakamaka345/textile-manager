@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Штори</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .scale-down {
+            transform: scale(0.90);
+            transform-origin: top left;
+        }
+
+        .compact-input {
+            padding: 0.5rem;
+            width: 80%;
+            font-size: 0.875rem;
+        }
+
+        .compact-header {
+            margin-bottom: 0.5rem;
+        }
+
+        .compact-section {
+            width: 22%;
+            padding: 0.5rem;
+        }
+
+        .compact-table {
+            width: 77%;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white h-screen flex items-start justify-center overflow-auto">
+    <div class="relative w-full bg-gray-800 p-4 rounded-lg shadow-lg">
+        <header class="flex justify-center items-center compact-header">
+            <button class="absolute top-0 left-1 m-2 text-white text-xl hover:text-gray-400" id="back-btn">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+            <h1 class="text-3xl font-bold">Таблиця штор</h1>
+        </header>
+        <main class="flex space-x-2">
+            <!-- Filter Section -->
+            <aside class="compact-section bg-gray-900 rounded-lg border border-gray-700">
+                <h2 class="text-xl font-bold mb-2">Фільтри</h2>
+                <button class="bg-gray-700 text-white rounded-lg px-2 py-1 mb-4 hover:bg-gray-800" id="clear-filters">Очистити фільтри</button>
+                <div class="mb-4" id="filter-code">
+                    <h3 class="font-semibold mb-1">Код</h3>
+                    <input type="text" id="filter-code-input" class="compact-input bg-gray-800 rounded-lg border border-gray-600">
+                </div>
+                <div class="mb-4" id="filter-name">
+                    <h3 class="font-semibold mb-1">Ім'я</h3>
+                    <input type="text" id="filter-name-input" class="compact-input bg-gray-800 rounded-lg border border-gray-600">
+                </div>
+                <div class="mb-4" id="filter-color">
+                    <h3 class="font-semibold mb-1">Колір</h3>
+                    <ul id="color-filters" class="space-y-1">
+                        <!-- Colors will be populated dynamically -->
+                    </ul>
+                </div>
+                <div class="mb-4" id="filter-fabric-type">
+                    <h3 class="font-semibold mb-1">Тип тканини</h3>
+                    <ul id="fabric-filters" class="space-y-1">
+                        <!-- Fabric types will be populated dynamically -->
+                    </ul>
+                </div>
+                <div class="mb-4" id="filter-curtain-type">
+                    <h3 class="font-semibold mb-1">Тип штори</h3>
+                    <ul id="curtain-filters" class="space-y-1">
+                        <!-- Curtain types will be populated dynamically -->
+                    </ul>
+                </div>
+                <div class="mb-4" id="filter-supplier">
+                    <h3 class="font-semibold mb-1">Постачальник</h3>
+                    <ul id="supplier-filters" class="space-y-1">
+                        <!-- Suppliers will be populated dynamically -->
+                    </ul>
+                </div>
+                <div class="mb-4" id="filter-date">
+                    <h3 class="font-semibold mb-1">Дата</h3>
+                    <input type="text" id="filter-date-input" class="compact-input bg-gray-800 rounded-lg border border-gray-600">
+                </div>
+                <button class="bg-gray-700 text-white rounded-lg px-2 py-1 hover:bg-gray-800" id="apply-filters">Застосувати фільтри</button>
+            </aside>
+
+            <!-- Main Table Section -->
+            <section class="compact-table overflow-auto">
+                <div class="scale-down">
+                    <table class="w-full bg-gray-800 rounded-lg border border-gray-600 shadow-md">
+                        <thead>
+                            <tr class="bg-gray-700">
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Зображення</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Код</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Ім'я</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Колір</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Вид тканини</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Тип штори</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Ціна закупу</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Ціна продажу</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Кількість</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Постачальник</th>
+                                <th class="py-2 px-3 border-b-2 border-gray-600">Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table-body" class="border-t border-gray-600">
+                            <!-- Products will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../../renderer/curtainsSearchRenderer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#filter-date-input", {
+            enableTime: false,
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+    </script>
+</body>
+
+</html>

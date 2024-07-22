@@ -160,14 +160,14 @@ ipcMain.on('storage-page', (event, arg) => {
 });
 
 ipcMain.on('add-curtain', (event, arg) => {
-    const { code, name, colorId, fabricTypeId, curtainTypeId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
-
+    const { code, name, colorId, fabricTypeId, curtainTypeId, purchasePrice, sellingPrice, length, supplierId, date, image } = arg;
+    console.log(image);
     const query = `
-        INSERT INTO curtains (code, name, color_id, fabrictype_id, curtaintype_id, purchaseprice, sellingprice, length, supplier_id, date) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        INSERT INTO curtains (code, name, color_id, fabrictype_id, curtaintype_id, purchaseprice, sellingprice, length, supplier_id, date, image) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
-        db.prepare(query).run(code, name, colorId, fabricTypeId, curtainTypeId, purchasePrice, sellingPrice, length, supplierId, date);
+        db.prepare(query).run(code, name, colorId, fabricTypeId, curtainTypeId, purchasePrice, sellingPrice, length, supplierId, date, image);
         event.reply('curtain-added', { name });
     } catch (err) {
         event.reply('curtain-failed', err.message);
@@ -176,7 +176,7 @@ ipcMain.on('add-curtain', (event, arg) => {
 
 ipcMain.on('get-curtains', (event) => {
     const query = `
-        SELECT c.id, c.code, c.name, co.name as color, f.name as fabric, t.name as curtain, c.purchaseprice, c.sellingprice, c.length, s.name as supplier, c.date
+        SELECT c.id, c.code, c.name, co.name as color, f.name as fabric, t.name as curtain, c.purchaseprice, c.sellingprice, c.length, s.name as supplier, c.date, c.image
         FROM curtains c
         JOIN colors co ON c.color_id = co.id
         JOIN fabrictypes f ON c.fabrictype_id = f.id
@@ -204,14 +204,14 @@ ipcMain.on('delete-curtain', (event, arg) => {
 });
 
 ipcMain.on('add-tulle', (event, arg) => {
-    const { code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
+    const { code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date, image } = arg;
 
     const query = `
-        INSERT INTO tulles (code, name, color_id, fabrictype_id, tulletype_id, purchaseprice, sellingprice, length, supplier_id, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        INSERT INTO tulles (code, name, color_id, fabrictype_id, tulletype_id, purchaseprice, sellingprice, length, supplier_id, date, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
-        db.prepare(query).run(code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date);
+        db.prepare(query).run(code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date, image);
         event.reply('tulle-added', { name });
     } catch (err) {
         event.reply('tulle-failed', err.message);
@@ -220,7 +220,7 @@ ipcMain.on('add-tulle', (event, arg) => {
 
 ipcMain.on('get-tulles', (event) => {
     const query = `
-        SELECT t.id, t.code, t.name, co.name as color, f.name as fabric, tu.name as tulle, t.purchaseprice, t.sellingprice, t.length, s.name as supplier, t.date
+        SELECT t.id, t.code, t.name, co.name as color, f.name as fabric, tu.name as tulle, t.purchaseprice, t.sellingprice, t.length, s.name as supplier, t.date, t.image
         FROM tulles t
         JOIN colors co ON t.color_id = co.id
         JOIN fabrictypes f ON t.fabrictype_id = f.id
@@ -248,14 +248,14 @@ ipcMain.on('delete-tulle', (event, arg) => {
 });
 
 ipcMain.on('add-lace', (event, arg) => {
-    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
+    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image } = arg;
 
     const query = `
-        INSERT INTO laces (code, name, color_id, purchaseprice, sellingprice, length, supplier_id, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        INSERT INTO laces (code, name, color_id, purchaseprice, sellingprice, length, supplier_id, date, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
-        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date);
+        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image);
         event.reply('lace-added', { name });
     } catch (err) {
         event.reply('lace-failed', err.message);
@@ -264,7 +264,7 @@ ipcMain.on('add-lace', (event, arg) => {
 
 ipcMain.on('get-laces', (event) => {
     const query = `
-        SELECT l.id, l.code, l.name, co.name as color, l.purchaseprice, l.sellingprice, l.length, s.name as supplier, l.date
+        SELECT l.id, l.code, l.name, co.name as color, l.purchaseprice, l.sellingprice, l.length, s.name as supplier, l.date, l.image
         FROM laces l
         JOIN colors co ON l.color_id = co.id
         JOIN suppliers s ON l.supplier_id = s.id`;
@@ -291,14 +291,14 @@ ipcMain.on('delete-lace', (event, arg) => {
 });
 
 ipcMain.on('add-fitting', (event, arg) => {
-    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date } = arg;
+    const { code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image } = arg;
 
     const query = `
-        INSERT INTO fittings (code, name, color_id, purchaseprice, sellingprice, count, supplier_id, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        INSERT INTO fittings (code, name, color_id, purchaseprice, sellingprice, length, supplier_id, date, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
-        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date);
+        db.prepare(query).run(code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image);
         event.reply('fitting-added', { name });
     } catch (err) {
         event.reply('fitting-failed', err.message);
@@ -307,7 +307,7 @@ ipcMain.on('add-fitting', (event, arg) => {
 
 ipcMain.on('get-fittings', (event) => {
     const query = `
-        SELECT f.id, f.code, f.name, co.name as color, f.purchaseprice, f.sellingprice, f.count, s.name as supplier, f.date
+        SELECT f.id, f.code, f.name, co.name as color, f.purchaseprice, f.sellingprice, f.length, s.name as supplier, f.date, f.image
         FROM fittings f
         JOIN colors co ON f.color_id = co.id
         JOIN suppliers s ON f.supplier_id = s.id`;
@@ -455,6 +455,118 @@ ipcMain.on('add-order-textile', (event, arg) => {
         event.reply('order-textile-added', { table, order_id, textile_id });
     } catch (err) {
         event.reply('orders-failed', err.message);
+    }
+});
+
+ipcMain.on('search-page', (event, arg) => {
+    win.loadURL(`file://${path.join(__dirname, 'pages/search/', `${arg}.html`)}`);
+});
+
+ipcMain.on('get-search-curtains', (event, arg) => {
+    const curtainsQuery = `
+        SELECT c.id, c.code, c.name, c.color_id, co.name as color, c.fabrictype_id, f.name as fabric, c.curtaintype_id, t.name as curtain, c.purchaseprice, c.sellingprice, c.length, c.supplier_id, s.name as supplier, c.date, c.image
+        FROM curtains c
+        JOIN colors co ON c.color_id = co.id
+        JOIN fabrictypes f ON c.fabrictype_id = f.id
+        JOIN curtaintypes t ON c.curtaintype_id = t.id
+        JOIN suppliers s ON c.supplier_id = s.id
+        ORDER BY c.length DESC`;
+
+    const colorsQuery = `SELECT * FROM colors`;
+    const fabrictypesQuery = `SELECT * FROM fabrictypes`;
+    const curtaintypesQuery = `SELECT * FROM curtaintypes`;
+    const suppliersQuery = `SELECT * FROM suppliers`;
+
+    try {
+        const curtains = db.prepare(curtainsQuery).all();
+        const colors = db.prepare(colorsQuery).all();
+        const fabrictypes = db.prepare(fabrictypesQuery).all();
+        const curtaintypes = db.prepare(curtaintypesQuery).all();
+        const suppliers = db.prepare(suppliersQuery).all();
+        event.reply('search-curtains', { curtains, colors, fabrictypes, curtaintypes, suppliers });
+    } catch (err) {
+        event.reply('search-failed', err.message);
+    }
+});
+
+ipcMain.on('get-search-tulles', (event, arg) => {
+    const tullesQuery = `
+        SELECT t.id, t.code, t.name, t.color_id, co.name as color, t.fabrictype_id, f.name as fabric, t.tulletype_id, tu.name as tulle, t.purchaseprice, t.sellingprice, t.length, t.supplier_id, s.name as supplier, t.date, t.image
+        FROM tulles t
+        JOIN colors co ON t.color_id = co.id
+        JOIN fabrictypes f ON t.fabrictype_id = f.id
+        JOIN tulletypes tu ON t.tulletype_id = tu.id
+        JOIN suppliers s ON t.supplier_id = s.id
+        ORDER BY t.length DESC`;
+
+    const colorsQuery = `SELECT * FROM colors`;
+    const fabrictypesQuery = `SELECT * FROM fabrictypes`;
+    const tulletypesQuery = `SELECT * FROM tulletypes`;
+    const suppliersQuery = `SELECT * FROM suppliers`;
+
+    try {
+        const tulles = db.prepare(tullesQuery).all();
+        const colors = db.prepare(colorsQuery).all();
+        const fabrictypes = db.prepare(fabrictypesQuery).all();
+        const tulletypes = db.prepare(tulletypesQuery).all();
+        const suppliers = db.prepare(suppliersQuery).all();
+        event.reply('search-tulles', { tulles, colors, fabrictypes, tulletypes, suppliers });
+    } catch (err) {
+        event.reply('search-failed', err.message);
+    }
+});
+
+ipcMain.on('get-search-laces', (event, arg) => {
+    const lacesQuery = `
+        SELECT l.id, l.code, l.name, l.color_id, co.name as color, l.purchaseprice, l.sellingprice, l.length, l.supplier_id, s.name as supplier, l.date, l.image
+        FROM laces l
+        JOIN colors co ON l.color_id = co.id
+        JOIN suppliers s ON l.supplier_id = s.id
+        ORDER BY l.length DESC`;
+
+    const colorsQuery = `SELECT * FROM colors`;
+    const suppliersQuery = `SELECT * FROM suppliers`;
+
+    try {
+        const laces = db.prepare(lacesQuery).all();
+        const colors = db.prepare(colorsQuery).all();
+        const suppliers = db.prepare(suppliersQuery).all();
+        event.reply('search-laces', { laces, colors, suppliers });
+    } catch (err) {
+        event.reply('search-failed', err.message);
+    }
+});
+
+ipcMain.on('get-search-fittings', (event, arg) => {
+    const fittingsQuery = `
+        SELECT f.id, f.code, f.name, f.color_id, co.name as color, f.purchaseprice, f.sellingprice, f.length, f.supplier_id, s.name as supplier, f.date, f.image
+        FROM fittings f
+        JOIN colors co ON f.color_id = co.id
+        JOIN suppliers s ON f.supplier_id = s.id
+        ORDER BY f.length DESC`;
+
+    const colorsQuery = `SELECT * FROM colors`;
+    const suppliersQuery = `SELECT * FROM suppliers`;
+
+    try {
+        const fittings = db.prepare(fittingsQuery).all();
+        const colors = db.prepare(colorsQuery).all();
+        const suppliers = db.prepare(suppliersQuery).all();
+        event.reply('search-fittings', { fittings, colors, suppliers });
+    } catch (err) {
+        event.reply('search-failed', err.message);
+    }
+});
+
+ipcMain.on('update-search', (event, arg) => {
+    const { table, id, column, value } = arg;
+    const query = `UPDATE ${table} SET ${column} = ? WHERE id = ?`;
+
+    try {
+        db.prepare(query).run(value, id);
+        event.reply('search-updated', { id, column, value });
+    } catch (err) {
+        event.reply('search-failed', err.message);
     }
 });
 

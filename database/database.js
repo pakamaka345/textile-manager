@@ -29,6 +29,7 @@ function createCurtainsTable() {
             length REAL NOT NULL,
             supplier_id INTEGER,
             date DATE NOT NULL,
+            image TEXT DEFAULT NULL,
             FOREIGN KEY (color_id) REFERENCES colors(id),
             FOREIGN KEY (fabrictype_id) REFERENCES fabrictypes(id),
             FOREIGN KEY (curtaintype_id) REFERENCES curtaintypes(id),
@@ -54,6 +55,7 @@ function createFittingsTable() {
             length REAL NOT NULL,
             supplier_id INTEGER,
             date DATE NOT NULL,
+            image TEXT DEFAULT NULL,
             FOREIGN KEY (color_id) REFERENCES colors(id),
             FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
         )`;
@@ -77,6 +79,7 @@ function createLacesTable() {
             length REAL NOT NULL,
             supplier_id INTEGER,
             date DATE NOT NULL,
+            image TEXT DEFAULT NULL,
             FOREIGN KEY (color_id) REFERENCES colors(id),
             FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
         )`;
@@ -102,6 +105,7 @@ function createTullesTable() {
             length REAL NOT NULL,
             supplier_id INTEGER,
             date DATE NOT NULL,
+            image TEXT DEFAULT NULL,
             FOREIGN KEY (color_id) REFERENCES colors(id),
             FOREIGN KEY (fabrictype_id) REFERENCES fabrictypes(id),
             FOREIGN KEY (tulletype_id) REFERENCES tulletypes(id),

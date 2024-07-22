@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Склад</title>
+</head>
+<body class="bg-gray-800 text-white h-screen flex items-center justify-center">
+    <div class="absolute top-5 left-5 m-4">
+        <button class="text-white text-2xl hover:text-gray-400" id="back-btn">
+            <i class="fa-solid fa-backward"></i>
+        </button>
+    </div>
+    <div class="relative bg-gray-700 w-11/12 p-5 rounded-lg">
+        <div class="flex flex-col justify-center items-center gap-4">
+            <button class="w-1/2 h-16 bg-gray-400 text-white rounded hover:bg-gray-500 text-2xl" id="orders-id">
+                Замовлення
+            </button>
+            <button class="w-1/2 h-16 bg-gray-400 text-white rounded hover:bg-gray-500 text-2xl" id="curtains-id">
+                Штори
+            </button>
+            <button class="w-1/2 h-16 bg-gray-400 text-white rounded hover:bg-gray-500 text-2xl" id="tulles-id">
+                Тюлі
+            </button>
+            <button class="w-1/2 h-16 bg-gray-400 text-white rounded hover:bg-gray-500 text-2xl" id="laces-id">
+                Мереживо
+            </button>
+            <button class="w-1/2 h-16 bg-gray-400 text-white rounded hover:bg-gray-500 text-2xl" id="fittings-id">
+                Фурнітура
+            </button>
+        </div>
+    </div>
+    <script src="../renderer/searchRenderer.js"></script>
+    <script src="https://kit.fontawesome.com/08de6add7e.js" crossorigin="anonymous"></script>
+</body>
+</html>

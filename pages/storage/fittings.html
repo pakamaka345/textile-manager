@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-800 text-white h-screen flex items-center justify-center">
     <div class="relative w-3/4 bg-gray-700 p-5 rounded-lg">
-        <button class="absolute top-0 left-1 m-4 text-white text-2xl" id="back-btn">
+        <button class="absolute top-0 left-1 m-4 text-white text-2xl hover:text-gray-400" id="back-btn">
             <i class="fa-solid fa-backward"></i>
         </button>
         <div class="absolute top-5 right-5 m-4" id="icon-ctr">
@@ -59,6 +59,16 @@
                         <!-- Options will be populated dynamically -->
                     </select>
                 </div>
+                <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-white mb-1">Зображення</label>
+                    <div class="flex items-center">
+                        <label class="w-full flex flex-col items-center px-4 py-6 bg-gray-700 text-white rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-white">
+                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                            <span class="mt-2 text-base leading-normal">Вибрати файл</span>
+                            <input type="file" id="image" name="image" class="hidden">
+                        </label>
+                    </div>
+                </div>
                 <div id="error" class="hidden absolute top-22 right-5 m-4">
                     <i class="fa-solid fa-exclamation-circle mr-2"></i>
                     <span id="error-text" class="text-2xl"></span>
@@ -80,6 +90,7 @@
             <thead>
                 <tr class="bg-gray-900">
                     <th class="py-2 px-4"></th> <!-- Edit and Delete buttons go here -->
+                    <th class="py-2 px-4 border">Зображення</th>
                     <th class="py-2 px-4 border">ID</th>
                     <th class="py-2 px-4 border">Код</th>
                     <th class="py-2 px-4 border">Ім'я</th>
@@ -101,7 +112,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         flatpickr("#date", {
-            enableTime: true,
+            enableTime: false,
             dateFormat: "d-m-Y",
             allowInput: true
         });

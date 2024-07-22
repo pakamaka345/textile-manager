@@ -38,10 +38,24 @@ function addFittings() {
         const length = document.getElementById('length').value;
         const supplierId = document.getElementById('suppliers-id').value;
         const date = document.getElementById('date').value;
-    
-        ipcRenderer.send('add-fitting', {
-            code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date
-        });
+
+        const file = document.getElementById('image').files[0];
+        const reader = new FileReader();
+        
+        if (file) {
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                const base64String = reader.result;
+                ipcRenderer.send('add-fitting', {
+                    code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image: base64String
+                });
+            }
+        }
+        else {
+            ipcRenderer.send('add-fitting', {
+                code, name, colorId, purchasePrice, sellingPrice, length, supplierId, date, image: null
+            });
+        }
 
         document.getElementById('code').value = '';
         document.getElementById('name').value = '';
@@ -51,6 +65,7 @@ function addFittings() {
         document.getElementById('length').value = '';
         document.getElementById('suppliers-id').value = '';
         document.getElementById('date').value = '';
+        document.getElementById('image').value = '';
     });
 }
 
@@ -92,6 +107,9 @@ ipcRenderer.on('fittings', (event, fittings) => {
                 <button class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-id="${fitting.id}">
                     Видалити
                 </button>
+            </td>
+            <td class="py-2 px-4 flex justify-center items-center">
+                ${fitting.image ? `<img src="${fitting.image}" class="w-16 h-16 object-cover">` : ''}
             </td>
             <td class="py-2 px-4 border">${fitting.id}</td>
             <td class="py-2 px-4 border">${fitting.code}</td>

@@ -42,10 +42,25 @@ function addTulle() {
         const length = document.getElementById('length').value;
         const supplierId = document.getElementById('suppliers-id').value;
         const date = document.getElementById('date').value;
-    
-        ipcRenderer.send('add-tulle', {
-            code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date
-        });
+
+        const file = document.getElementById('image').files[0];
+        const reader = new FileReader();
+
+        if (file) {
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                const base64String = reader.result;
+                ipcRenderer.send('add-tulle', {
+                    code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date, image: base64String
+                });
+            }
+        } 
+        else {
+            ipcRenderer.send('add-tulle', {
+                code, name, colorId, fabricTypeId, tulleTypeId, purchasePrice, sellingPrice, length, supplierId, date, image: null
+            });
+        }
+        
 
         document.getElementById('code').value = '';
         document.getElementById('name').value = '';
@@ -57,6 +72,7 @@ function addTulle() {
         document.getElementById('length').value = '';
         document.getElementById('suppliers-id').value = '';
         document.getElementById('date').value = '';
+        document.getElementById('image').value = '';
     });
 }
 
@@ -98,6 +114,9 @@ ipcRenderer.on('tulles', (event, tulles) => {
                 <button class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-id="${tulle.id}">
                     Видалити
                 </button>
+            </td>
+            <td class="py-2 px-4 flex justify-center items-center">
+                ${tulle.image ? `<img src="${tulle.image}" class="w-16 h-16 object-cover">` : ''}
             </td>
             <td class="py-2 px-4 border">${tulle.id}</td>
             <td class="py-2 px-4 border">${tulle.code}</td>
