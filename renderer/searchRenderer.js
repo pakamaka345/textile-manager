@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
     
     orders_btn.addEventListener('click', () => {
-        ipcRenderer.send('search-page', 'orders');
+        ipcRenderer.send('search-page', 'order');
     })
 
     document.getElementById('back-btn').addEventListener('click', () => {

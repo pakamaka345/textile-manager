@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замовлення</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .scale-down {
+            transform: scale(0.90);
+            transform-origin: top left;
+        }
+
+        .compact-input {
+            padding: 0.5rem;
+            width: 80%;
+            font-size: 0.875rem;
+        }
+
+        .compact-header {
+            margin-bottom: 0.5rem;
+        }
+
+        .compact-section {
+            width: 22%;
+            padding: 0.5rem;
+        }
+
+        .compact-table {
+            width: 77%;
+        }
+
+        .order-card {
+            border: 1px solid #4A5568;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #2D3748;
+        }
+
+        .order-card h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-card .items {
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .order-card .item {
+            border-top: 1px solid #4A5568;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .order-card .item:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white h-screen flex items-start justify-center overflow-auto">
+    <div class="relative w-full bg-gray-800 p-4 rounded-lg shadow-lg">
+        <header class="flex justify-center items-center compact-header">
+            <button class="absolute top-0 left-1 m-2 text-white text-xl hover:text-gray-400" id="back-btn">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+            <h1 class="text-3xl font-bold">Замовлення</h1>
+        </header>
+        <main class="flex space-x-2">
+            <!-- Filter Section -->
+            <aside class="compact-section bg-gray-900 rounded-lg border border-gray-700">
+                <h2 class="text-xl font-bold mb-2">Фільтри</h2>
+                <button class="bg-gray-700 text-white rounded-lg px-2 py-1 mb-4 hover:bg-gray-800" id="clear-filters">Очистити фільтри</button>
+                <div class="mb-4" id="filter-phone-number">
+                    <h3 class="font-semibold mb-1">Номер телефону</h3>
+                    <input type="text" id="filter-phone-number-input" class="compact-input bg-gray-800 rounded-lg border border-gray-600">
+                </div>
+                <div class="mb-4" id="filter-date">
+                    <h3 class="font-semibold mb-1">Дата</h3>
+                    <input type="text" id="filter-date-input" class="compact-input bg-gray-800 rounded-lg border border-gray-600">
+                </div>
+                <button class="bg-gray-700 text-white rounded-lg px-2 py-1 hover:bg-gray-800" id="apply-filters">Застосувати фільтри</button>
+            </aside>
+
+            <!-- Orders Section -->
+            <section class="compact-table overflow-auto">
+                <div class="scale-down">
+                    <div id="orders-list">
+                        <!-- Orders will be populated dynamically -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../../renderer/ordersSearchRenderer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#filter-date-input", {
+            enableTime: false,
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+    </script>
+</body>
+
+</html>

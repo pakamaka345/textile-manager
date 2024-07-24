@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Звіти</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-8">Звіти компанії</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Параметри звіту</h2>
+
+            <div class="mb-6">
+                <label for="report-type" class="block text-lg font-medium text-gray-700 mb-2">Тип звіту</label>
+                <select id="report-type" class="block w-full p-2 border border-gray-300 rounded-md">
+                    <option value="quarter">Дохід за квартал</option>
+                    <option value="month">Дохід за місяць</option>
+                    <option value="year">Дохід за рік</option>
+                    <option value="custom">Користувацький період</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="mb-6">
+                    <label for="start-date" class="block text-lg font-medium text-gray-700 mb-2">Початкова дата</label>
+                    <input type="date" id="start-date" class="block w-full p-2 border border-gray-300 rounded-md">
+                </div>
+
+                <div class="mb-6">
+                    <label for="end-date" class="block text-lg font-medium text-gray-700 mb-2">Кінцева дата</label>
+                    <input type="date" id="end-date" class="block w-full p-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+
+            <button id="generate-report" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700">
+                Генерувати звіт
+            </button>
+        </div>
+
+        <div id="report" class="mt-8">
+            <!-- Report content will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        // This part would be handled by your Electron app's JavaScript.
+        document.getElementById('generate-report').addEventListener('click', () => {
+            const reportType = document.getElementById('report-type').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            // Simulate a generated report for demo purposes
+            const report = {
+                startDate,
+                endDate,
+                orders: [
+                    {
+                        id: 1,
+                        curtains: [
+                            { id: 1, name: 'Curtain A', code: 'CA123', color: 'Red', length: '2m', sellingprice: '100', purchaseprice: '70' }
+                        ],
+                        tulles: [
+                            { id: 2, name: 'Tulle B', code: 'TB456', color: 'Blue', length: '3m', sellingprice: '120', purchaseprice: '80' }
+                        ],
+                        laces: [
+                            { id: 3, name: 'Lace C', code: 'LC789', color: 'Green', length: '1m', sellingprice: '50', purchaseprice: '30' }
+                        ],
+                        fittings: [
+                            { id: 4, name: 'Fitting D', code: 'FD012', color: 'Yellow', length: '4m', sellingprice: '70', purchaseprice: '40' }
+                        ]
+                    }
+                ]
+            };
+
+            // Display the report data
+            const reportContainer = document.getElementById('report');
+            reportContainer.innerHTML = generateReportHTML(report);
+        });
+
+        function generateReportHTML(report) {
+            let html = '<div class="bg-white shadow-md rounded p-4">';
+            html += `<h2 class="text-xl font-bold mb-4">Звіт з ${report.startDate} по ${report.endDate}</h2>`;
+            report.orders.forEach(order => {
+                html += `<div class="mb-4"><h3 class="font-semibold">Замовлення #${order.id}</h3>`;
+                html += generateOrderTableHTML(order.curtains, 'Штори');
+                html += generateOrderTableHTML(order.tulles, 'Тюлі');
+                html += generateOrderTableHTML(order.laces, 'Мережива');
+                html += generateOrderTableHTML(order.fittings, 'Фурнітура');
+                html += '</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function generateOrderTableHTML(items, title) {
+            let html = `<h4 class="font-semibold mt-2">${title}</h4><table class="min-w-full bg-white"><thead><tr>`;
+            html += '<th class="py-2">ID</th><th class="py-2">Назва</th><th class="py-2">Код</th><th class="py-2">Колір</th><th class="py-2">Довжина</th><th class="py-2">Ціна продажу</th><th class="py-2">Ціна закупу</th>';
+            html += '</tr></thead><tbody>';
+            items.forEach(item => {
+                html += `<tr><td class="border px-4 py-2">${item.id}</td><td class="border px-4 py-2">${item.name}</td><td class="border px-4 py-2">${item.code}</td><td class="border px-4 py-2">${item.color}</td><td class="border px-4 py-2">${item.length}</td><td class="border px-4 py-2">${item.sellingprice}</td><td class="border px-4 py-2">${item.purchaseprice}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            return html;
+        }
+    </script>
+</body>
+</html>

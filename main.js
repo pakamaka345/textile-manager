@@ -558,6 +558,44 @@ ipcMain.on('get-search-fittings', (event, arg) => {
     }
 });
 
+ipcMain.on('get-search-orders', (event, arg) => {
+    const query = `SELECT * FROM orders`;
+    const curtainsQuery = `SELECT oc.order_id, oc.curtain_id, oc.length, oc.sellingprice, c.code, c.name, c.purchaseprice, co.name as color
+                        FROM order_curtains oc
+                        JOIN curtains c ON oc.curtain_id = c.id
+                        JOIN colors co ON c.color_id = co.id
+                        WHERE oc.order_id = ?`;
+    const tullesQuery = `SELECT ot.order_id, ot.tulle_id, ot.length, ot.sellingprice, t.code, t.name, t.purchaseprice, co.name as color
+                        FROM order_tulles ot
+                        JOIN tulles t ON ot.tulle_id = t.id
+                        JOIN colors co ON t.color_id = co.id
+                        WHERE ot.order_id = ?`;
+    const lacesQuery = `SELECT ol.order_id, ol.lace_id, ol.length, ol.sellingprice, l.code, l.name, l.purchaseprice, co.name as color
+                        FROM order_laces ol
+                        JOIN laces l ON ol.lace_id = l.id
+                        JOIN colors co ON l.color_id = co.id
+                        WHERE ol.order_id = ?`;
+    const fittingsQuery = `SELECT of.order_id, of.fitting_id, of.length, of.sellingprice, f.code, f.name, f.purchaseprice, co.name as color
+                        FROM order_fittings of
+                        JOIN fittings f ON of.fitting_id = f.id
+                        JOIN colors co ON f.color_id = co.id
+                        WHERE of.order_id = ?`;
+
+    try {
+        const orders = db.prepare(query).all();
+        orders.forEach(element => {
+            element.curtains = db.prepare(curtainsQuery).all(element.id);
+            element.tulles = db.prepare(tullesQuery).all(element.id);
+            element.laces = db.prepare(lacesQuery).all(element.id);
+            element.fittings = db.prepare(fittingsQuery).all(element.id);
+        });
+
+        event.reply('search-orders', orders);
+    } catch (err) {
+        event.reply('search-failed', err.message);
+    }
+});
+
 ipcMain.on('update-search', (event, arg) => {
     const { table, id, column, value } = arg;
     const query = `UPDATE ${table} SET ${column} = ? WHERE id = ?`;
@@ -569,5 +607,4 @@ ipcMain.on('update-search', (event, arg) => {
         event.reply('search-failed', err.message);
     }
 });
-
 
